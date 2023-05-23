@@ -1,23 +1,27 @@
-import logo from './logo.svg';
+import {useState, useEffect} from 'react'
+import { Form } from './components/Form';
 import './App.css';
 
+
 function App() {
+  const [parties, setParties] = useState([])
+
+  const fetchParties = async () => {
+    const res = await fetch('https://6441f8e733997d3ef905d6ee.mockapi.io/Full_Crud_API/PARTIES');
+    const data = await res.json();
+    setParties(data)
+    
+  }
+
+  useEffect(() => {
+    fetchParties()
+  },[])
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Form />
+      {parties.map(party => <p key={party.id}>{party.partyName}</p>)}
     </div>
   );
 }
